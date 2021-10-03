@@ -7,21 +7,28 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 
-function valuetext(value) {
-  return `${value}`;
-}
+
+
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
-const [age, setAge] = React.useState('');
-
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
 
 const Dashboard = () => {
   
 
+  const [volume, setVolume] = useState(30);
+  const [quality, setQuality] = React.useState('');
+  const [online, setOnline] = useState(true);
+
+  const handleSwitch = (e) => {
+    setOnline(e.target.checked)
+  }
+  
+    const handleChange = (event) => {
+      setQuality(event.target.value);
+    };
+
   return (
+    <div>
     <div style= {{display:"flex", justifyContent: "space-around", marginTop: "40px"}}>
        <Paper
        style = {{
@@ -32,7 +39,7 @@ const Dashboard = () => {
        elevation={3} >
          <h1>Online Mode</h1>
          <p style = {{ textAlign: "left", margin: "auto 30px"}}>Are you connected to the internet?</p>
-         <Switch {...label} defaultChecked />
+         <Switch {...label} checked= {online} onChange= {handleSwitch} />
         </Paper>
 
       <Paper
@@ -48,8 +55,7 @@ const Dashboard = () => {
          <div style = {{width: "275px", margin: "50px auto auto auto"}}>
          <Slider
         aria-label="Temperature"
-        defaultValue={30}
-        getAriaValueText={valuetext}
+        value={volume}
         valueLabelDisplay="auto"
         step={10}
         marks
@@ -70,12 +76,13 @@ const Dashboard = () => {
          <p style = {{ textAlign: "left", margin: "auto 30px"}}>Manually control the music quality in event of poor connection</p>
          
          <FormControl fullWidth style = {{margin: "20px auto auto auto"}}>
-         <InputLabel id="demo-simple-select-label">Age</InputLabel>
+
+         <InputLabel id="demo-simple-select-label">Quality</InputLabel>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={age}
-          label="Age"
+          value={quality}
+          label="Quality"
           onChange={handleChange}
         >
           <MenuItem value={1}>Low Quality</MenuItem>
@@ -84,6 +91,11 @@ const Dashboard = () => {
         </Select>
         </FormControl>
          </Paper>
+         </div>
+         <h1>System Notifications:</h1>
+         {volume >= 80 && <p>Volume is too loud!</p>}
+         {quality == 1 && <p>Quality is low</p>}
+         {online  && <p>Bad connection</p>}
     </div>
   );
 }
